@@ -1,0 +1,23 @@
+{
+  "name": "ExampleWPA",
+  "version": "1.0.0",
+  "description": "PWA",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1 -p 8081",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bian2017/PWA.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bian2017/PWA/issues"
+  },
+  "homepage": "https://github.com/Bian2017/PWA#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
