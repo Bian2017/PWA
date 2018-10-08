@@ -7,7 +7,7 @@ Example PWA
 
 ## 一、网络应用清单(Mainifest)
 
-网络应用清单是一个 JSON 文件，您（即开发者）可以利用它控制在用户想要看到应用的区域（例如移动设备主屏幕）中如何向用户显示网络应用或网站，指示用户可以启动哪些功能，以及定义其在启动时的外观。
+网络应用清单是一个 JSON 文件，开发者可以利用它控制在用户想要看到应用的区域（例如移动设备主屏幕）中如何向用户显示网络应用或网站，指示用户可以启动哪些功能，以及定义其在启动时的外观。
 
 先创建一个基本清单，然后为其链接一个网页，修改代码见[分支daily/0.0.1](https://github.com/Bian2017/bgl-example-pwa/commit/817750fcda0afdef2c08884e09e5daf6ae63a45f)。
 
@@ -89,3 +89,58 @@ self.addEventListener('fetch', function(event) {
 这里我们定义了 fetch 事件，并且在 event.respondWith() 中，我们传入来自 caches.match() 的一个 promise。 此方法检视该请求，并从服务工作线程所创建的任何缓存中查找缓存的结果。
 
 如果发现匹配的响应，则返回缓存的值，否则，将调用 fetch 以发出网络请求，并将从网络检索到的任何数据作为结果返回。这是一个简单的例子，它使用了在安装步骤中缓存的所有资产。
+
+
+## 三、Firebase线上部署
+
+谷歌的 Firebase 平台提供了为移动端（iOS和Android）和 Web 端创建后端架构的完整解决方案。
+
+1. 安装firebase
+
+> npm install -g firebase-tools
+
+2. 登录google
+
+> firebase login
+
+由于国内用户都使用代理进行FQ，所以若出现无法登录情况，则可以尝试修改request.js代码，request.js代码在本项目位于/Users/XXXX/.nvm/versions/node/v8.11.3/lib/node_modules/firebase-tools/node_modules/request。我的FQ软件的代理服务器地址是'127.0.0.1:53234'，则代码进行如下修改：
+
+```JS
+// line 290 to 298
+// if (!self.hasOwnProperty('proxy')) {
+//   self.proxy = getProxyFromURI(self.uri)
+// }
+self.proxy = 'http://127.0.0.1:53234'    // 设置代理服务器
+
+self.tunnel = self._tunnel.isEnabled()
+
+if (self.proxy) {
+  self._tunnel.setup(options)
+}
+```
+
+然后重新运行firebase login，即可登录成功。
+
+**注意：**
+
+登录成功之后，要记得及时恢复上述代码。
+
+3. 启动项目
+
+运行脚本：
+
+> firebase init
+
+然后选择“Hosting: Configure and deploy Firebase Hosting sites ”，然后选择你当前的项目，之后根据项目进行相应配置。
+
+![]()
+
+4. 部署网站
+
+> firebase deploy
+
+![]()
+
+在手机浏览器打开上述网址，可将网站图标添加到手机屏幕上，离线情况下也可查看网址内容。
+
+![]()
