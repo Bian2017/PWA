@@ -6,10 +6,9 @@ self.addEventListener('install', function (event) {
   // 延长事件的寿命从而阻止浏览器在事件中的异步操作完成之前终止Service Work线程
   event.waitUntil(caches.open('static')
     .then(function (cache) {
-      cache.add('/')
-      cache.add('/index.html')
-      cache.add('/src/js/app.js')
-
+      // cache.add('/')
+      // cache.add('/index.html')
+      // cache.add('/src/js/app.js')
       cache.addAll([
         '/',
         '/index.html',

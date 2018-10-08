@@ -1,4 +1,4 @@
-Example PWA
+[Example PWA](https://bgl-example-pwa.firebaseapp.com/)
 ---
 
 [参考视频](https://www.youtube.com/watch?v=I3jTvWj8JrQ)
@@ -9,7 +9,7 @@ Example PWA
 
 网络应用清单是一个 JSON 文件，开发者可以利用它控制在用户想要看到应用的区域（例如移动设备主屏幕）中如何向用户显示网络应用或网站，指示用户可以启动哪些功能，以及定义其在启动时的外观。
 
-先创建一个基本清单，然后为其链接一个网页，修改代码见[分支daily/0.0.1](https://github.com/Bian2017/bgl-example-pwa/commit/817750fcda0afdef2c08884e09e5daf6ae63a45f)。
+首先创建一个基本清单，然后将其链接到网页中，修改代码见[分支daily/0.0.1](https://github.com/Bian2017/bgl-example-pwa/commit/817750fcda0afdef2c08884e09e5daf6ae63a45f)。
 
 ## 二、服务工作线程(Service Workers)
 
@@ -143,6 +143,6 @@ if (self.proxy) {
 
 ![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/deploy.png)
 
-在手机浏览器上打开firebase deploy生成的网址: https://bgl-example-pwa.firebaseapp.com/，浏览器会提示将网站图标添加到手机屏幕上。此时离线情况下也可查看网址内容。
+在手机浏览器上打开firebase deploy生成的网址:https://bgl-example-pwa.firebaseapp.com/ ，浏览器会提示将网站图标添加到手机屏幕上。此时离线情况下也可查看网址内容。
 
 ![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/PWA.png)
