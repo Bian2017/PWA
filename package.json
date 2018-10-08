@@ -1,5 +1,5 @@
 {
-  "name": "ExampleWPA",
+  "name": "bgl-example-wpa",
   "version": "1.0.0",
   "description": "PWA",
   "main": "index.js",
