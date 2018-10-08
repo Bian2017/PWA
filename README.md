@@ -1,8 +1,8 @@
-# PWA
+Example PWA
+---
 
-谷歌官方视频[链接](https://www.youtube.com/watch?v=17kGWJOuL-A&list=PLNYkxOF6rcIAdnzEsWkg0KpMn2WJwMBmN)
-
-PWA的基础是https://。
+[参考视频](https://www.youtube.com/watch?v=I3jTvWj8JrQ)
+[参考文章](https://developers.google.com/web/fundamentals/primers/service-workers/)
 
 ## Web App Mainifest
 
@@ -10,18 +10,71 @@ PWA的基础是https://。
 
 创建网络应用清单manifest.json，代码见[分支daily/0.0.1](https://github.com/Bian2017/bgl-example-pwa/commit/817750fcda0afdef2c08884e09e5daf6ae63a45f)。
 
-## Service Worker
+## 二、服务工作线程(Service Workers)
 
-Service Worker要求运行环境是HTTPS，localhost除外。
+Service Workers是浏览器在后台独立于网页运行的脚本。它区别于传统的JS文件，作用于全局，无需绑定任何页面。在手机上运行时，即使关闭浏览器页面，Service Workers依旧在后台运行，可用来实现推送通知和后台同步等功能。
 
-+ 浏览器在后台独立于网页运行的脚本；
++ 它是一种 JavaScript 工作线程，无法直接访问 DOM。 Service Workers通过响应 postMessage 接口发送的消息来与其控制的页面通信，页面可在必要时对 DOM 执行操作；
++ Service Workers是一种可编程网络代理，让您能够控制页面所发送网络请求的处理方式。
++ 它在不用时会被中止，并在下次有需要时重启，因此，您不能依赖于Service Workers的 onfetch 和 onmessage 处理程序中的全局状态。如果存在您需要持续保存并在重启后加以重用的信息，Service Workers可以访问 IndexedDB API。
 
-+ 拦截和处理网络请求，操作缓存；
+### 2.1 HTTPS
 
-+ 支持Push API等;
+在开发过程中，可以通过 localhost 使用Service Workers，但如果要在网站上部署Service Workers，需要在服务器上设置 HTTPS。
 
-+ 后台同步 & 更新缓存；
+### 2.2 注册Service Workers
 
-Service Worker区别于传统的JS文件，它不绑定在任何页面，它是全局的。在安卓手机上关闭页面时，Service Worker会在后台运行，用来推送消息。
+要安装Service Workers，您需要通过在页面中对其进行注册来启动安装。 这将告诉浏览器Service Workers JavaScript 文件的位置，实践代码见[分支daily/0.0.2](https://github.com/Bian2017/bgl-example-pwa/commit/d6ec8305d8a92b1f986ca5255d0c1d8a0ce72c79)
 
-![]()
+
+### 2.3 安装Service Workers
+
+需要为install事件定义回调，并决定想要缓存的文件。
+```JS
+self.addEventListener('install', function (event) {
+  console.log("SW Installed")
+
+  // 延长事件的寿命从而阻止浏览器在事件中的异步操作完成之前终止Service Work线程
+  event.waitUntil(caches.open('static')
+    .then(function (cache) {
+      cache.addAll([
+        '/',
+        '/index.html',
+        '/src/js/app.js',
+        '/src/css/app.css',
+        '/src/images/pwa.jpg',
+        'https://fonts.googleapis.com/css?family=Raleway:400,700'
+      ])
+    })
+  )
+})
+```
+
+event.waitUntil() 方法带有 promise 参数并使用它来判断安装所花费的时间以及安装是否成功。
+
+如果所有文件都成功缓存，则将安装Service Workers。 如有任何文件无法下载，则安装步骤将失败。 这可让您依赖于所定义的所有资产，但也意味着需要对您决定在安装步骤缓存的文件列表格外留意。定义一个过长的文件列表将会增加文件缓存失败的几率，从而导致Service Workers未能安装。
+
+### 2.4 缓存和返回请求
+
+您已安装服务工作线程，现在可能会想要返回一个缓存的响应，对吧？
+
+在安装服务工作线程且用户转至其他页面或刷新当前页面后，服务工作线程将开始接收 fetch 事件。下面提供了一个示例:
+
+```JS
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request)
+      .then(function(res) {
+        if(res) {
+          return res
+        } else {
+          return fetch(event.request)         // 返回一个Promise
+        }
+      })
+  )
+})
+```
+
+这里我们定义了 fetch 事件，并且在 event.respondWith() 中，我们传入来自 caches.match() 的一个 promise。 此方法检视该请求，并从服务工作线程所创建的任何缓存中查找缓存的结果。
+
+如果发现匹配的响应，则返回缓存的值，否则，将调用 fetch 以发出网络请求，并将从网络检索到的任何数据作为结果返回。这是一个简单的例子，它使用了在安装步骤中缓存的所有资产。
