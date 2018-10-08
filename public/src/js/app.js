@@ -4,7 +4,7 @@ var pwaCardDetails = pwaCard.querySelector('.card__details');
 var detailsShown = false;
 
 // 应用的每个页面都需要注册这句话，否则当用户访问其他页面时会出错。
-if ('serviceWorker' in navigator) {                       // 浏览器不支持，则跳过
+if ('serviceWorker' in navigator) {                       // 针对不支持的浏览器，则跳过注册
   navigator.serviceWorker.register('./sw.js')
     .then(function() {
       console.log("SW registered")

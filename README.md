@@ -2,13 +2,14 @@ Example PWA
 ---
 
 [参考视频](https://www.youtube.com/watch?v=I3jTvWj8JrQ)
+
 [参考文章](https://developers.google.com/web/fundamentals/primers/service-workers/)
 
-## Web App Mainifest
+## 一、网络应用清单(Mainifest)
 
-允许把站点添加到手机屏幕上。
+网络应用清单是一个 JSON 文件，您（即开发者）可以利用它控制在用户想要看到应用的区域（例如移动设备主屏幕）中如何向用户显示网络应用或网站，指示用户可以启动哪些功能，以及定义其在启动时的外观。
 
-创建网络应用清单manifest.json，代码见[分支daily/0.0.1](https://github.com/Bian2017/bgl-example-pwa/commit/817750fcda0afdef2c08884e09e5daf6ae63a45f)。
+先创建一个基本清单，然后为其链接一个网页，修改代码见[分支daily/0.0.1](https://github.com/Bian2017/bgl-example-pwa/commit/817750fcda0afdef2c08884e09e5daf6ae63a45f)。
 
 ## 二、服务工作线程(Service Workers)
 
@@ -18,18 +19,28 @@ Service Workers是浏览器在后台独立于网页运行的脚本。它区别�
 + Service Workers是一种可编程网络代理，让您能够控制页面所发送网络请求的处理方式。
 + 它在不用时会被中止，并在下次有需要时重启，因此，您不能依赖于Service Workers的 onfetch 和 onmessage 处理程序中的全局状态。如果存在您需要持续保存并在重启后加以重用的信息，Service Workers可以访问 IndexedDB API。
 
-### 2.1 HTTPS
+### 2.1 必要条件HTTPS
 
 在开发过程中，可以通过 localhost 使用Service Workers，但如果要在网站上部署Service Workers，需要在服务器上设置 HTTPS。
 
 ### 2.2 注册Service Workers
 
-要安装Service Workers，您需要通过在页面中对其进行注册来启动安装。 这将告诉浏览器Service Workers JavaScript 文件的位置，实践代码见[分支daily/0.0.2](https://github.com/Bian2017/bgl-example-pwa/commit/d6ec8305d8a92b1f986ca5255d0c1d8a0ce72c79)
+要安装Service Workers，您需要通过在页面中对其进行注册来启动安装。 这将告诉浏览器Service Workers JavaScript 文件的位置，注册代码如下：
 
+```JS
+// 应用的每个页面都需要注册。
+if ('serviceWorker' in navigator) {                       // 针对不支持的浏览器，则跳过注册
+  navigator.serviceWorker.register('./sw.js')
+    .then(function() {
+      console.log("SW registered")
+    })
+}
+```
 
 ### 2.3 安装Service Workers
 
-需要为install事件定义回调，并决定想要缓存的文件。
+为install事件定义回调，并决定想要缓存的文件。
+
 ```JS
 self.addEventListener('install', function (event) {
   console.log("SW Installed")
