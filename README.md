@@ -88,6 +88,8 @@ self.addEventListener('fetch', function(event) {
 
 这里我们定义了 fetch 事件，并且在 event.respondWith() 中，我们传入来自 caches.match() 的一个 promise。 此方法检视该请求，并从服务工作线程所创建的任何缓存中查找缓存的结果。
 
+![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/ServiceWorker.png )
+
 如果发现匹配的响应，则返回缓存的值，否则，将调用 fetch 以发出网络请求，并将从网络检索到的任何数据作为结果返回。这是一个简单的例子，它使用了在安装步骤中缓存的所有资产。
 
 
@@ -133,14 +135,14 @@ if (self.proxy) {
 
 然后选择“Hosting: Configure and deploy Firebase Hosting sites ”，然后选择你当前的项目，之后根据项目进行相应配置。
 
-![]()
+![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/init.png)
 
 4. 部署网站
 
 > firebase deploy
 
-![]()
+![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/deploy.png)
 
 在手机浏览器打开上述网址，可将网站图标添加到手机屏幕上，离线情况下也可查看网址内容。
 
-![]()
+![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/PWA.png)
