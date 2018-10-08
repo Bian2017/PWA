@@ -95,17 +95,17 @@ self.addEventListener('fetch', function(event) {
 
 ## 三、Firebase线上部署
 
-谷歌的 Firebase 平台提供了为移动端（iOS和Android）和 Web 端创建后端架构的完整解决方案。
+谷歌的 Firebase 平台提供了为移动端（iOS和Android）和 Web 端创建后端架构的完整解决方案。本项目将通过Firebase来实现线上部署。
 
-1. 安装firebase
+### 3.1 全局安装firebase
 
 > npm install -g firebase-tools
 
-2. 登录google
+### 3.2 登录google
 
 > firebase login
 
-由于国内用户都使用代理进行FQ，所以若出现无法登录情况，则可以尝试修改request.js代码，request.js代码在本项目位于/Users/XXXX/.nvm/versions/node/v8.11.3/lib/node_modules/firebase-tools/node_modules/request。我的FQ软件的代理服务器地址是'127.0.0.1:53234'，则代码进行如下修改：
+由于国内用户都使用代理进行FQ，所以会出现无法登录的情况，此时可以尝试修改firebase-tools工具下的request.js代码。，本项目的request.js代码位于/Users/XXX/.nvm/versions/node/v8.11.3/lib/node_modules/firebase-tools/node_modules/request。由于我的FQ软件代理服务器地址是'127.0.0.1:53234'，则代码进行如下修改：
 
 ```JS
 // line 290 to 298
@@ -127,22 +127,22 @@ if (self.proxy) {
 
 登录成功之后，要记得及时恢复上述代码。
 
-3. 启动项目
+### 3.3 启动项目
 
 运行脚本：
 
 > firebase init
 
-然后选择“Hosting: Configure and deploy Firebase Hosting sites ”，然后选择你当前的项目，之后根据项目进行相应配置。
+然后选择“Hosting: Configure and deploy Firebase Hosting sites ”。然后选择你当前的项目，之后根据项目的需求进行相应配置。
 
 ![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/init.png)
 
-4. 部署网站
+### 3.4 部署网站
 
 > firebase deploy
 
 ![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/deploy.png)
 
-在手机浏览器打开上述网址，可将网站图标添加到手机屏幕上，离线情况下也可查看网址内容。
+在手机浏览器上打开firebase deploy生成的网址: https://bgl-example-pwa.firebaseapp.com/，浏览器会提示将网站图标添加到手机屏幕上。此时离线情况下也可查看网址内容。
 
 ![](https://raw.githubusercontent.com/Bian2017/bgl-example-pwa/master/docs/img/PWA.png)
