@@ -3,6 +3,14 @@ var pwaCardContent = pwaCard.querySelector('.card__content');
 var pwaCardDetails = pwaCard.querySelector('.card__details');
 var detailsShown = false;
 
+// 应用的每个页面都需要注册这句话，否则当用户访问其他页面时会出错。
+if ('serviceWorker' in navigator) {                       // 浏览器不支持，则跳过
+  navigator.serviceWorker.register('./sw.js')
+    .then(function() {
+      console.log("SW registered")
+    })
+}
+
 pwaCard.addEventListener('click', function (event) {
   if (!detailsShown) {
     detailsShown = true;
